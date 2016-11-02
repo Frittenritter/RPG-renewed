@@ -1,0 +1,15 @@
+name: "RPG reloaded"
+version: 0.1
+description: Immensive Overhaul for Bukkit Servers
+website: dev.bukkit.org
+author: Frittenritter
+main: me.frittenritter.rpgreloaded
+depend: [Vault]
+
+commands:
+  rpgr:
+    description: 'Main Command'
+    usage: /<command>
+    permission: rpgr.admin
+    permission-message: 'No permission.'
+permission-message: 'No permission.'

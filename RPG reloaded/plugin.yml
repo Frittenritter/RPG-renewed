@@ -1,9 +1,9 @@
-name: "RPG reloaded"
+name: "RPG_reloaded"
 version: 0.1
 description: Immensive Overhaul for Bukkit Servers
 website: dev.bukkit.org
 author: Frittenritter
-main: me.frittenritter.rpgreloaded
+main: me.frittenritter.rpgreloaded.RPGReloaded
 depend: [Vault]
 
 commands:

@@ -2,18 +2,20 @@ package me.frittenritter.rpgreloaded.handlers;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
 import me.frittenritter.rpgreloaded.RPGReloaded;
-import me.frittenritter.rpgreloaded.handlers.confighandler.ConfigFile;
+import me.frittenritter.rpgreloaded.handlers.files.ConfigFile;
 
 public class ConfigHandler {
 	private Map<String, ConfigFile> configlist;
 	private RPGReloaded plugin;
 	public ConfigHandler(RPGReloaded plugin) {
-		plugin = this.plugin;
+		this.plugin = plugin;
 		configlist = new HashMap<String, ConfigFile>();
 	}
 	//Getter for the FileConfig Objects of the different Configs (Which allow access to YAML config options)
@@ -35,21 +37,16 @@ public class ConfigHandler {
 	public File getFile(ConfigFile conffile) {
 		return conffile.getFile();
 	}
-	
-	public void saveConfig(FileConfiguration fileconf) {
-		
-	}
-	
-	public void reloadConfig(File configfile) {
-		
-	}
-	
-	public void getConfig() {
-		
-	}
-	
-	public void saveDefaultConfig() {
-		
+
+	public void saveAllConfigs() {
+		plugin.getLogger().info("Saving Configurations...");
+		Iterator<Entry<String, ConfigFile>> it = configlist.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Entry<String, ConfigFile> pair = it.next();
+	        pair.getValue().saveConfig();;
+	        
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
 	}
 	
 }

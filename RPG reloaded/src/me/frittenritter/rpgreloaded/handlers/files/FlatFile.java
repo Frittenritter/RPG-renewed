@@ -1,6 +1,7 @@
-package me.frittenritter.rpgreloaded.handlers.confighandler;
+package me.frittenritter.rpgreloaded.handlers.files;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,9 +19,9 @@ public class FlatFile extends FileConfiguration  {
 		this.plugin = plugin;
 		this.filename = filename;
 		if(subfolder != null) 
-			file = new File(plugin.getDataFolder() +"data/" + subfolder +"/", filename + ".yml"); 
+			file = new File("plugins/RPG_Reloaded/data/" + subfolder +"/", filename + ".yml"); 
 		else 
-			file = new File(plugin.getDataFolder() +"data/", filename + ".yml");
+			file = new File("plugins/RPG_Reloaded/data/", filename + ".yml");
 		
 		fileconfig = YamlConfiguration.loadConfiguration(file);
 	}
@@ -58,6 +59,17 @@ public class FlatFile extends FileConfiguration  {
 		return fileconfig.getDouble(path);
 	}
 
+	//Method for Saving File to Hard drive
+	public void saveFile() {
+		if (fileconfig == null || file == null) {
+	        return;
+	    }
+	    try {
+	        getFileConfig().save(file);
+	    } catch (IOException ex) {
+	        plugin.getLogger().severe("Could not save config to " + file);
+	    }
+	}
 	@Override
 	protected String buildHeader() {
 		// TODO Auto-generated method stub

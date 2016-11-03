@@ -1,4 +1,4 @@
-package me.frittenritter.rpgreloaded.handlers.confighandler;
+package me.frittenritter.rpgreloaded.handlers.files;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import org.bukkit.craftbukkit.libs.jline.internal.InputStreamReader;
 import me.frittenritter.rpgreloaded.RPGReloaded;
 
 public class ConfigFile extends FileConfiguration {
-	private File configFile;
+	File configFile;
 	FileConfiguration config;
 	RPGReloaded plugin;
 	String configname;
@@ -21,7 +21,9 @@ public class ConfigFile extends FileConfiguration {
 	public ConfigFile(String configname,RPGReloaded plugin) {
 		this.plugin = plugin;
 		this.configname = configname;
+		configFile = new File("plugins/RPG_Reloaded/config/" + configname + ".yml");
 		reloadConfig();
+		saveDefaultConfig();
 	}
 	
 	public FileConfiguration getConfig() {
@@ -42,32 +44,27 @@ public class ConfigFile extends FileConfiguration {
 	}
 	
 	public void saveDefaultConfig() {
-		if (configFile == null) {
-	        configFile = new File(plugin.getDataFolder(), configname + ".yml");
-	    }
+		//Save default config
 	    if (!configFile.exists()) {            
-	         plugin.saveResource(configname + ".yml", false);
+	         plugin.saveResource("config/" + configname + ".yml", false);
 	     }
 	}
 	
 	public void reloadConfig() {
-	    if (configFile == null) {
-	    configFile = new File(plugin.getDataFolder(), configname + ".yml");
-	    }
 	    config = YamlConfiguration.loadConfiguration(configFile);
 
 	    // Look for defaults in the jar
 	    Reader defConfigStream;
-		try {
-			defConfigStream = new InputStreamReader(plugin.getResource(configname + ".yml"), "UTF8");
-			if (defConfigStream != null) {
-		        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-		        config.setDefaults(defConfig);
-		    }
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			plugin.getLogger().severe("File " + configname + ".yml  in RPGReloaded.jar uses unsupported encoding!");
-		}
+	    if(plugin.getResource("config/" + configname + ".yml") != null) {
+	    	try {
+				defConfigStream = new InputStreamReader(plugin.getResource("config/" + configname + ".yml"), "UTF8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				return;
+			}
+	    	YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	    	config.setDefaults(defConfig);
+	    } else plugin.getLogger().severe("The configuration " + configname + " within the .jar could not be found!");
 	    
 	}
 	

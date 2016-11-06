@@ -1,52 +1,59 @@
 package me.frittenritter.rpgreloaded.handlers;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.libs.jline.internal.InputStreamReader;
 
 import me.frittenritter.rpgreloaded.RPGReloaded;
-import me.frittenritter.rpgreloaded.handlers.files.ConfigFile;
 
 public class ConfigHandler {
-	private Map<String, ConfigFile> configlist;
-	private RPGReloaded plugin;
-	public ConfigHandler(RPGReloaded plugin) {
-		this.plugin = plugin;
-		configlist = new HashMap<String, ConfigFile>();
-	}
-	//Getter for the FileConfig Objects of the different Configs (Which allow access to YAML config options)
-	public FileConfiguration getConfig(String filename) {
-		return configlist.get(filename).getConfig();
-	}
-	//Config initialization by name
-	public ConfigFile newConfig(String filename) {
-		ConfigFile conffile = new ConfigFile(filename, plugin);
-		configlist.put(filename, conffile);
-		
-		return conffile;
-	}
-	//Getter for Config Objects saved in the HashMap
-	public ConfigFile getConfigFile(String name) {
-		return configlist.get(name);
+	public static RPGReloaded plugin;
+	
+	public static void initializeConfigs() {
+		registerConfig("main");
+		registerConfig("abilities");
+		registerConfig("items");
+		registerConfig("lang");
 	}
 	
-	public File getFile(ConfigFile conffile) {
-		return conffile.getFile();
+	
+	//Register a Configuration with a name
+	private static void registerConfig(String configname) {
+		File configFile;
+		configFile = new File("plugins/RPG_Reloaded/config/" + configname + ".yml");
+		FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+		if(!configFile.exists()) {
+			setDefaults(config, configFile, configname);
+			saveDefaultConfig(configFile, configname);
+		}
+		plugin.configlist.put(configname, config);
 	}
+	
+	private static void setDefaults(FileConfiguration config, File configFile, String configname) {
+		config = YamlConfiguration.loadConfiguration(configFile);
 
-	public void saveAllConfigs() {
-		plugin.getLogger().info("Saving Configurations...");
-		Iterator<Entry<String, ConfigFile>> it = configlist.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Entry<String, ConfigFile> pair = it.next();
-	        pair.getValue().saveConfig();;
-	        
-	        it.remove(); // avoids a ConcurrentModificationException
-	    }
+	    // Look for defaults in the jar
+	    Reader defConfigStream;
+	    if(plugin.getResource("config/" + configname + ".yml") != null) {
+	    	try {
+				defConfigStream = new InputStreamReader(plugin.getResource("config/" + configname + ".yml"), "UTF8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				return;
+			}
+	    	YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	    	config.setDefaults(defConfig);
+	    } else plugin.getLogger().severe("The configuration " + configname + ".yml within the .jar could not be found!");
+	}
+	
+	private static void saveDefaultConfig(File configFile, String configname) {
+	    if (!configFile.exists()) {
+	         plugin.saveResource("config/" + configname + ".yml", false);
+	     }
 	}
 	
 }

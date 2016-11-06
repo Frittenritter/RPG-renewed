@@ -8,7 +8,7 @@ depend: [Vault]
 
 commands:
   rpgr:
-    description: 'Main Command'
+    description: 'RPG Reloaded'
     usage: /<command>
     permission: rpgr.admin
     permission-message: 'No permission.'

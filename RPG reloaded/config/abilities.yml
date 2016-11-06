@@ -1,0 +1,23 @@
+Schwertkampf:
+    gained-experience:
+        crafting:
+            wooden-sword: 0.1
+        hitting:
+            zombie: 0.2
+            creeper: 0.2
+    needed-experience:
+        first-level: 200.0
+        level-modificator-percent: 2.0
+        
+Schiesskunst:
+
+Runenkunst:
+
+Alchemie:
+
+Schmieden:
+
+Kochkunst:
+
+Verteidigung:
+

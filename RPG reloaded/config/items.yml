@@ -1,0 +1,10 @@
+generic-item-identifier: "Werkstoff"
+
+
+items:
+    '1':
+        name: "Mehl"
+        material: "ink_sack"
+        desc: "Gemahlenes Weizen"
+        type: "generic"
+        durability: 15

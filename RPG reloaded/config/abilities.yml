@@ -1,23 +1,28 @@
-Schwertkampf:
-    gained-experience:
-        crafting:
-            wooden-sword: 0.1
-        hitting:
-            zombie: 0.2
-            creeper: 0.2
-    needed-experience:
-        first-level: 200.0
-        level-modificator-percent: 2.0
-        
-Schiesskunst:
+main:
+    ability-points-gain: 4
+    ability-points-basic: 10
 
-Runenkunst:
+abilities:
+    Schwertkampf:
+        gained-experience:
+            crafting:
+                wooden-sword: 0.1
+            hitting:
+                zombie: 0.2
+                creeper: 0.2
+        needed-experience:
+            first-level: 200.0
+            level-modificator-percent: 2.0
+            
+    Schiesskunst:
 
-Alchemie:
+    Runenkunst:
 
-Schmieden:
+    Alchemie:
 
-Kochkunst:
+    Schmieden:
 
-Verteidigung:
+    Kochkunst:
+
+    Verteidigung:
 
